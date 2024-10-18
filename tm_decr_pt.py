@@ -4,6 +4,7 @@
 import argparse
 import json
 from base64 import b64decode
+import hashlib
 
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -12,7 +13,7 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.backends import default_backend
 
 
-def tr_decrypt(data_file_path, key_file_path, private_key_path):
+def tr_decrypt(data_file_path, key_file_path, private_key_path, info):
     with open(private_key_path, 'rb') as private_key_file:
         private_key = serialization.load_pem_private_key(private_key_file.read(),
                                                          password=None,
@@ -55,15 +56,33 @@ def tr_decrypt(data_file_path, key_file_path, private_key_path):
                 decrypted_chunk = decryptor.update(chunk)
                 f_out.write(decrypted_chunk)
             f_out.write(decryptor.finalize())
-    
+
+    if info:
+        sha256_hash = hashlib.sha256()
+        with open(pcap_file_path, 'rb') as f:
+            for byte_block in iter(lambda: f.read(4096), b''):
+                sha256_hash.update(byte_block)
+            h = sha256_hash.hexdigest()
+        info_vars = {}
+        with open(info, 'rt') as f:
+            for line in f:
+                name, value = line.partition('=')[::2]
+                info_vars[name.strip()] = value.rstrip('\n')
+
+        if h == info_vars['data_sha256']:
+            print('PCAP SHA256 is correct')
+        else:
+            print('PCAP SHA256 is incorrect')
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-k', '--private-key', required=True, dest='private_key_path', help="The RSA private key")
     parser.add_argument('-j', '--json-file', required=True, dest='key_file_path', help="The encrypted JSON file")
     parser.add_argument('-p', '--pcap-file', required=True, dest='data_file_path', help="The PCAP file to decrypt")
+    parser.add_argument('-i', '--info', dest='verify', help="The info.txt file")
     args = parser.parse_args()
     
-    tr_decrypt(args.data_file_path, args.key_file_path, args.private_key_path)
+    tr_decrypt(args.data_file_path, args.key_file_path, args.private_key_path, args.verify)
 
 if __name__ == '__main__':
     main()
