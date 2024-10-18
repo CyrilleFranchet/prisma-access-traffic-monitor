@@ -7,11 +7,12 @@ PCAP file.
 
 usage: tm_decr_pt.py [-h] -k PRIVATE_KEY_PATH -j KEY_FILE_PATH -p DATA_FILE_PATH
 
-options:
-  -h, --help            show this help message and exit
-  -k, --private-key PRIVATE_KEY_PATH
-                        The RSA private key
-  -j, --json-file KEY_FILE_PATH
-                        The encrypted JSON file
-  -p, --pcap-file DATA_FILE_PATH
-                        The PCAP file to decrypt
+options:  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-h, --help  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;show this help message and exit  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-k, --private-key PRIVATE_KEY_PATH  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The RSA private key  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-j, --json-file KEY_FILE_PATH  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The encrypted JSON file  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-p, --pcap-file DATA_FILE_PATH  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;The PCAP file to decrypt  
